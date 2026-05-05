@@ -322,7 +322,14 @@ class BackgroundSessionImpl implements BackgroundSession {
       }
     }
 
+    // Only synthesize crash event if process stopped AND there was no progress.
+    // If there was progress (tool calls, tokens, etc.) but no end event, the agent may have
+    // finished but not yet written the end event to the log file - let the retry loop handle it.
+    // This check ensures we don't incorrectly crash when the agent has actually made progress.
+    const hasProgress = hasObservableBackgroundProgress(result)
     const events = stillRunning || sawEnd
+      ? result.events
+      : hasProgress
       ? result.events
       : [...result.events, this.synthesizeCrashEvent(result.rawOutput ?? "")]
 
@@ -674,25 +681,37 @@ class BackgroundSessionImpl implements BackgroundSession {
     }
 
     // Crashed: process exited without end event
+    // Only synthesize crash if there was no observable progress - otherwise wait for retry loop.
     if (!stillRunning && !sawEnd) {
-      const crashEvent = this.synthesizeCrashEvent(result.rawOutput ?? "")
-      debugLog(
-        "session end",
-        this.parseContext.sessionId ?? meta.sessionId,
-        "reason=crashed",
-        crashEvent.message
-      )
-      await this.writeMetaIfChanged(
-        {
-          ...baseMeta,
-          currentTurn: (meta.currentTurn ?? 0) + 1,
-          sawEnd: true,
-        },
-        meta
-      )
+      const hasProgress = hasObservableBackgroundProgress(result)
+      if (!hasProgress) {
+        const crashEvent = this.synthesizeCrashEvent(result.rawOutput ?? "")
+        debugLog(
+          "session end",
+          this.parseContext.sessionId ?? meta.sessionId,
+          "reason=crashed",
+          crashEvent.message
+        )
+        await this.writeMetaIfChanged(
+          {
+            ...baseMeta,
+            currentTurn: (meta.currentTurn ?? 0) + 1,
+            sawEnd: true,
+          },
+          meta
+        )
+        return {
+          sessionId: result.sessionId,
+          events: [...result.events, crashEvent],
+          cursor: result.cursor,
+          running: false,
+          runPhase: "stopped",
+        }
+      }
+      // Has progress but no end event - still return running state to allow retry
       return {
         sessionId: result.sessionId,
-        events: [...result.events, crashEvent],
+        events: result.events,
         cursor: result.cursor,
         running: false,
         runPhase: "stopped",
