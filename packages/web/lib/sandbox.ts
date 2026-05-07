@@ -6,11 +6,49 @@
  * directly without duplicating the bring-up sequence.
  */
 
-import type { Daytona } from "@daytonaio/sdk"
+import type { Daytona, Sandbox } from "@daytonaio/sdk"
 import { randomUUID } from "crypto"
 import { createSandboxGit } from "@upstream/daytona-git"
 import { PATHS, SANDBOX_CONFIG } from "@/lib/constants"
 import { NEW_REPOSITORY } from "@/lib/types"
+
+/**
+ * Ensure a sandbox is in the "started" state, handling the race condition
+ * where multiple concurrent requests try to start the same sandbox.
+ *
+ * If the sandbox is already starting (409 Conflict), this will poll until
+ * the sandbox reaches "started" state or times out.
+ */
+export async function ensureSandboxStarted(
+  sandbox: Sandbox,
+  daytona: Daytona,
+  timeoutSeconds = 120
+): Promise<void> {
+  if (sandbox.state === "started") return
+
+  try {
+    await sandbox.start(timeoutSeconds)
+  } catch (err: unknown) {
+    // Handle race condition: another request is already starting this sandbox
+    const isConflict =
+      err instanceof Error &&
+      ((err as { statusCode?: number }).statusCode === 409 ||
+        err.message.includes("state change in progress"))
+
+    if (!isConflict) throw err
+
+    // Poll until started or timeout
+    const pollIntervalMs = 1000
+    const maxAttempts = timeoutSeconds
+    for (let i = 0; i < maxAttempts; i++) {
+      await new Promise((resolve) => setTimeout(resolve, pollIntervalMs))
+      // Refresh sandbox state by re-fetching
+      const refreshed = await daytona.get(sandbox.id)
+      if (refreshed.state === "started") return
+    }
+    throw new Error(`Sandbox failed to start within ${timeoutSeconds}s`)
+  }
+}
 
 export interface CreateSandboxOptions {
   daytona: Daytona
