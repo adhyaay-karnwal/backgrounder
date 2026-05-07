@@ -28,8 +28,7 @@ import { useChatWithSync } from "@/lib/hooks/useChatWithSync"
 import { useMobile } from "@/lib/hooks/useMobile"
 import { useGitHubTokenCheck } from "@/lib/hooks/useGitHubTokenCheck"
 import { usePreview } from "@/lib/hooks/usePreview"
-import { useModalState } from "@/lib/hooks/useModalState"
-import { ChatProvider, ModalProvider, GitProvider, type ChatContextValue, type GitContextValue } from "@/lib/contexts"
+import { ChatProvider, ModalProvider, useModals, GitProvider, type ChatContextValue, type GitContextValue } from "@/lib/contexts"
 import { NEW_REPOSITORY, getDefaultAgent, getDefaultModelForAgent, type Agent, type Message, type Chat } from "@/lib/types"
 import { useReposQuery, useBranchesQuery, useServersQuery } from "@/lib/query"
 import { PATHS } from "@upstream/common"
@@ -72,10 +71,40 @@ function ChatPanelWithPalette(props: React.ComponentProps<typeof ChatPanel>) {
   return <ChatPanel {...props} onOpenCommandPalette={openCommand} />
 }
 
+// =============================================================================
+// HomePage - Wrapper that sets up ModalProvider
+// =============================================================================
 export default function HomePage() {
+  const isMobile = useMobile()
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+
+  return (
+    <ModalProvider
+      isMobile={isMobile}
+      onMobileSidebarClose={() => setMobileSidebarOpen(false)}
+    >
+      <HomePageContent
+        isMobile={isMobile}
+        mobileSidebarOpen={mobileSidebarOpen}
+        setMobileSidebarOpen={setMobileSidebarOpen}
+      />
+    </ModalProvider>
+  )
+}
+
+// =============================================================================
+// HomePageContent - Main content inside ModalProvider, can use useModals()
+// =============================================================================
+interface HomePageContentProps {
+  isMobile: boolean
+  mobileSidebarOpen: boolean
+  setMobileSidebarOpen: (open: boolean) => void
+}
+
+function HomePageContent({ isMobile, mobileSidebarOpen, setMobileSidebarOpen }: HomePageContentProps) {
   const { data: session } = useSession()
   const { githubTokenInvalid } = useGitHubTokenCheck()
-  const isMobile = useMobile()
+  const modals = useModals()
 
   const {
     chats,
@@ -119,14 +148,7 @@ export default function HomePage() {
   // Sidebar state
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [sidebarWidth, setSidebarWidth] = useState(260)
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const mobileTitleMenuRef = useRef<HTMLDivElement>(null)
-
-  // Modal state from hook - passed to ModalProvider as value
-  const modals = useModalState({
-    isMobile,
-    onMobileSidebarClose: () => setMobileSidebarOpen(false),
-  })
 
   // Additional state not in modal hook
   const [envVarsChatEnvVars, setEnvVarsChatEnvVars] = useState<Record<string, string>>({})
@@ -287,7 +309,7 @@ export default function HomePage() {
     if (!isMobile) {
       setMobileSidebarOpen(false)
     }
-  }, [isMobile])
+  }, [isMobile, setMobileSidebarOpen])
 
   // Auto-select first chat on mobile when no chat is selected
   useEffect(() => {
@@ -633,7 +655,7 @@ export default function HomePage() {
         model: pending.model,
       })
     })()
-  }, [session, isHydrated, startNewChat, updateChatById, currentChatId])
+  }, [session, isHydrated, startNewChat, updateChatById, currentChatId, modals])
 
   useEffect(() => {
     if (!pendingSend) return
@@ -653,7 +675,7 @@ export default function HomePage() {
     }
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [modals.mobileTitleMenuOpen])
+  }, [modals.mobileTitleMenuOpen, modals])
 
   // Handler for slash commands - open the corresponding git dialog
   // Start a new chat off the current chat's branch. Defined before
@@ -668,7 +690,7 @@ export default function HomePage() {
       return
     }
     startNewChat(currentChat.repo, branchForNewChat, currentChat.id)
-  }, [currentChat, branchForNewChat, startNewChat, session])
+  }, [currentChat, branchForNewChat, startNewChat, session, modals])
 
   // Branch and send a message to the new chat (Option+Enter)
   // The new chat starts in the background - we stay on the current chat
@@ -685,7 +707,7 @@ export default function HomePage() {
     if (!chatId) return
     // Send message to the new chat (it runs in background)
     sendMessage(message, agent, model, undefined, chatId)
-  }, [currentChat, branchForNewChat, startNewChat, sendMessage, session])
+  }, [currentChat, branchForNewChat, startNewChat, sendMessage, session, modals])
 
   // Branch a queued message to a new chat (removes from queue)
   // The new chat starts in the background - we stay on the current chat
@@ -703,7 +725,7 @@ export default function HomePage() {
     if (!chatId) return
     // Send message to the new chat (it runs in background)
     sendMessage(message, agent, model, undefined, chatId)
-  }, [currentChat, branchForNewChat, startNewChat, sendMessage, removeQueuedMessage, session])
+  }, [currentChat, branchForNewChat, startNewChat, sendMessage, removeQueuedMessage, session, modals])
 
   const handleDownloadProject = useCallback(async () => {
     if (!currentChat?.sandboxId || isDownloading) return
@@ -1066,7 +1088,6 @@ export default function HomePage() {
       currentChatId={displayCurrentChatId}
       onSelectChat={handleSelectChat}
     >
-    <ModalProvider value={modals}>
     <ChatProvider value={chatContextValue}>
     <GitProvider value={gitContextValue}>
     <div className={`flex overflow-hidden ${isMobile ? 'h-screen-mobile' : 'h-screen'}`}>
@@ -1498,7 +1519,6 @@ export default function HomePage() {
     </div>
     </GitProvider>
     </ChatProvider>
-    </ModalProvider>
     </PaletteProvider>
   )
 }
