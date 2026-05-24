@@ -281,8 +281,8 @@ export default function AdminDashboard() {
                 {/* Daily Messages & Conversations */}
                 <div className="rounded-xl border bg-card p-4 md:p-6 shadow-sm">
                   <div className="mb-4 flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10">
-                      <MessageSquare className="h-4 w-4 text-purple-500" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-chart-1/15">
+                      <MessageSquare className="h-4 w-4 text-chart-1" />
                     </div>
                     <h3 className="font-medium">{isHourly ? "Hourly" : "Daily"} Messages & Conversations</h3>
                   </div>
@@ -292,8 +292,8 @@ export default function AdminDashboard() {
                 {/* Messages by Agent/Model */}
                 <div className="rounded-xl border bg-card p-4 md:p-6 shadow-sm">
                   <div className="mb-4 flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10">
-                      <TrendingUp className="h-4 w-4 text-blue-500" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-chart-2/15">
+                      <TrendingUp className="h-4 w-4 text-chart-2" />
                     </div>
                     <h3 className="font-medium">Messages by Agent/Model</h3>
                   </div>
@@ -307,8 +307,8 @@ export default function AdminDashboard() {
                 {/* Weekly Active Users */}
                 <div className="rounded-xl border bg-card p-4 md:p-6 shadow-sm">
                   <div className="mb-4 flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10">
-                      <Users className="h-4 w-4 text-green-500" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-chart-3/15">
+                      <Users className="h-4 w-4 text-chart-3" />
                     </div>
                     <h3 className="font-medium">Weekly Active Users</h3>
                   </div>
@@ -318,8 +318,8 @@ export default function AdminDashboard() {
                 {/* Top Active Users */}
                 <div className="rounded-xl border bg-card p-4 md:p-6 shadow-sm">
                   <div className="mb-4 flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10">
-                      <Trophy className="h-4 w-4 text-amber-500" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warning/15">
+                      <Trophy className="h-4 w-4 text-warning" />
                     </div>
                     <h3 className="font-medium">Top Active Users</h3>
                   </div>
@@ -332,8 +332,8 @@ export default function AdminDashboard() {
                 {/* Peak Hours */}
                 <div className="rounded-xl border bg-card p-4 md:p-6 shadow-sm lg:col-span-2">
                   <div className="mb-4 flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500/10">
-                      <Clock className="h-4 w-4 text-pink-500" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-chart-4/15">
+                      <Clock className="h-4 w-4 text-chart-4" />
                     </div>
                     <h3 className="font-medium">Peak Activity Hours</h3>
                   </div>

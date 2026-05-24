@@ -57,14 +57,14 @@ const ACTION_CONFIG: Record<
   string,
   { icon: LucideIcon; label: string; color: string }
 > = {
-  login: { icon: LogIn, label: "logged in", color: "text-green-600" },
-  logout: { icon: LogOut, label: "logged out", color: "text-gray-600" },
-  chat_created: { icon: FolderPlus, label: "created a chat", color: "text-blue-600" },
-  chat_deleted: { icon: Trash2, label: "deleted a chat", color: "text-red-600" },
-  message_sent: { icon: MessageSquare, label: "sent a message", color: "text-purple-600" },
-  settings_updated: { icon: Settings, label: "updated settings", color: "text-orange-600" },
-  admin_promoted: { icon: ShieldCheck, label: "promoted user to admin", color: "text-green-600" },
-  admin_demoted: { icon: ShieldOff, label: "removed admin status", color: "text-red-600" },
+  login: { icon: LogIn, label: "logged in", color: "text-success" },
+  logout: { icon: LogOut, label: "logged out", color: "text-muted-foreground" },
+  chat_created: { icon: FolderPlus, label: "created a chat", color: "text-info" },
+  chat_deleted: { icon: Trash2, label: "deleted a chat", color: "text-destructive" },
+  message_sent: { icon: MessageSquare, label: "sent a message", color: "text-primary" },
+  settings_updated: { icon: Settings, label: "updated settings", color: "text-warning" },
+  admin_promoted: { icon: ShieldCheck, label: "promoted user to admin", color: "text-success" },
+  admin_demoted: { icon: ShieldOff, label: "removed admin status", color: "text-destructive" },
 }
 
 const ACTION_LABELS: Record<string, string> = {

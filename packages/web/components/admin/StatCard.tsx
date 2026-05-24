@@ -27,9 +27,9 @@ export function StatCard({ icon: Icon, label, value, subValue, trend }: StatCard
               <span
                 className={`text-sm ${
                   trend === "up"
-                    ? "text-green-600"
+                    ? "text-success"
                     : trend === "down"
-                      ? "text-red-600"
+                      ? "text-destructive"
                       : "text-muted-foreground"
                 }`}
               >
