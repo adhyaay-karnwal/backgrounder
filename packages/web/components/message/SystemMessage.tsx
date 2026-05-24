@@ -22,8 +22,8 @@ export interface SystemMessageProps {
 export function SystemMessage({ icon: Icon, content, variant = "success", isMobile = false, repo, linkBranch, metadata, onForcePush }: SystemMessageProps) {
   const iconClasses = cn(
     "shrink-0",
-    variant === "error" && "text-red-500 dark:text-red-400",
-    variant === "success" && "text-green-600 dark:text-green-400",
+    variant === "error" && "text-destructive dark:text-destructive",
+    variant === "success" && "text-success dark:text-success",
     isMobile ? "h-4 w-4" : "h-3.5 w-3.5"
   )
 

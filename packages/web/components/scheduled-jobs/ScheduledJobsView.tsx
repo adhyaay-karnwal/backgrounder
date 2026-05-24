@@ -23,10 +23,10 @@ function getJobStatusIcon(job: ScheduledJob) {
     return <AlertCircle className="h-3.5 w-3.5 text-destructive" />
   }
   if (job.lastRun?.status === "completed") {
-    return <Check className="h-3.5 w-3.5 text-green-500" />
+    return <Check className="h-3.5 w-3.5 text-success" />
   }
   if (job.lastRun?.status === "running") {
-    return <Clock className="h-3.5 w-3.5 text-blue-500 animate-pulse" />
+    return <Clock className="h-3.5 w-3.5 text-info animate-pulse" />
   }
   return <Clock className="h-3.5 w-3.5 text-muted-foreground" />
 }
@@ -34,11 +34,11 @@ function getJobStatusIcon(job: ScheduledJob) {
 function getRunStatusIcon(status: string) {
   switch (status) {
     case "completed":
-      return <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+      return <CheckCircle2 className="h-3.5 w-3.5 text-success" />
     case "error":
       return <XCircle className="h-3.5 w-3.5 text-destructive" />
     case "running":
-      return <RefreshCw className="h-3.5 w-3.5 text-blue-500 animate-spin" />
+      return <RefreshCw className="h-3.5 w-3.5 text-info animate-spin" />
     default:
       return <Circle className="h-3.5 w-3.5 text-muted-foreground" />
   }
@@ -412,7 +412,7 @@ export function ScheduledJobsView({ onOpenForm, refreshKey, urlJobId, onNavigate
                     {/* Completion summary - styled like system messages */}
                     {selectedRun.status === "completed" && selectedRun.completedAt && (
                       <div className="flex items-start gap-2 text-sm">
-                        <Check className="h-3.5 w-3.5 mt-0.5 shrink-0 text-green-600 dark:text-green-400" />
+                        <Check className="h-3.5 w-3.5 mt-0.5 shrink-0 text-success dark:text-success" />
                         <span className="text-muted-foreground">
                           Agent finished after {formatDuration(selectedRun.startedAt, selectedRun.completedAt)}.
                         </span>
@@ -422,7 +422,7 @@ export function ScheduledJobsView({ onOpenForm, refreshKey, urlJobId, onNavigate
                     {/* PR created message */}
                     {selectedRun.status === "completed" && selectedRun.prUrl && (
                       <div className="flex items-start gap-2 text-sm">
-                        <GitPullRequest className="h-3.5 w-3.5 mt-0.5 shrink-0 text-green-600 dark:text-green-400" />
+                        <GitPullRequest className="h-3.5 w-3.5 mt-0.5 shrink-0 text-success dark:text-success" />
                         <a
                           href={selectedRun.prUrl}
                           target="_blank"

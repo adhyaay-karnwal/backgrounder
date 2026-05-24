@@ -138,7 +138,7 @@ function PasswordInput({
         data-form-type="other"
         className={cn(
           "pr-8 font-mono",
-          highlight && "border-red-500 focus:border-red-500 focus:ring-red-500/30"
+          highlight && "border-destructive focus:border-destructive focus:ring-destructive/30"
         )}
       />
       <button
@@ -166,7 +166,7 @@ function CopyCode({ text }: { text: string }) {
       }}
       className="cursor-pointer inline-flex items-center gap-1 rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] hover:bg-accent"
     >
-      {copied ? <Check className="h-2.5 w-2.5 text-green-500" /> : <Copy className="h-2.5 w-2.5" />}
+      {copied ? <Check className="h-2.5 w-2.5 text-success" /> : <Copy className="h-2.5 w-2.5" />}
       {text}
     </code>
   )
@@ -625,7 +625,7 @@ export function SettingsModal({ open, onClose, settings, credentialFlags, onSave
                       {licenseDetectLoading ? (
                         <span className="text-muted-foreground">Checking for credentials...</span>
                       ) : licenseDetectResult?.found ? (
-                        <span className="text-green-600 dark:text-green-400 flex items-center gap-1">
+                        <span className="text-success dark:text-success flex items-center gap-1">
                           <Check className="h-3 w-3" />
                           Detected from {sourceLabel}
                         </span>

@@ -231,7 +231,7 @@ function ConflictIndicator({
     <div className="relative" ref={conflictMenuRef}>
       <button
         onClick={() => setConflictMenuOpen(!conflictMenuOpen)}
-        className="flex h-7 w-7 items-center justify-center rounded-md text-amber-500 hover:bg-amber-500/10 transition-colors cursor-pointer"
+        className="flex h-7 w-7 items-center justify-center rounded-md text-warning hover:bg-warning/10 transition-colors cursor-pointer"
         title={isMergeConflict ? "Merge conflict" : "Rebase conflict"}
       >
         <AlertTriangle className="h-4 w-4" />
@@ -297,12 +297,12 @@ export function MobileConflictBar({
   actionLoading,
 }: MobileConflictBarProps) {
   return (
-    <div className="flex items-center justify-between px-4 py-2 text-xs bg-amber-500/10 border-b border-amber-500/20">
-      <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+    <div className="flex items-center justify-between px-4 py-2 text-xs bg-warning/10 border-b border-warning/20">
+      <div className="flex items-center gap-2 text-warning dark:text-warning">
         <AlertTriangle className="h-3.5 w-3.5" />
         <span>{isMergeConflict ? "Merge" : "Rebase"} conflict</span>
         {rebaseConflict?.conflictedFiles && rebaseConflict.conflictedFiles.length > 0 && (
-          <span className="text-amber-500/70">({rebaseConflict.conflictedFiles.length} files)</span>
+          <span className="text-warning/70">({rebaseConflict.conflictedFiles.length} files)</span>
         )}
       </div>
       <button

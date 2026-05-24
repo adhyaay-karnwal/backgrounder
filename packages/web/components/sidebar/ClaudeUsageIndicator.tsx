@@ -43,7 +43,7 @@ export function ClaudeUsageIndicator({
     if (remaining === null || total === null) return "text-muted-foreground"
     const percentRemaining = remaining / total
     if (percentRemaining <= 0) return "text-destructive"
-    if (percentRemaining <= 0.2) return "text-amber-500"
+    if (percentRemaining <= 0.2) return "text-warning"
     return "text-muted-foreground"
   }
 

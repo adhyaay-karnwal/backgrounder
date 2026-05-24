@@ -330,7 +330,7 @@ export function CommandPalette({
               value={rapidFireMode ? "disable rapid fire mode" : "enable rapid fire mode"}
               onSelect={() => run(onToggleRapidFire)}
             >
-              <Zap className={cn("mr-2 h-4 w-4", rapidFireMode ? "text-amber-500" : "text-muted-foreground")} />
+              <Zap className={cn("mr-2 h-4 w-4", rapidFireMode ? "text-warning" : "text-muted-foreground")} />
               <span>{rapidFireMode ? "Disable rapid fire mode" : "Enable rapid fire mode"}</span>
             </CommandItem>
           )}

@@ -8,7 +8,7 @@ interface MergedChatCheckmarkProps {
 export function MergedChatCheckmark({ className }: MergedChatCheckmarkProps) {
   return (
     <Check
-      className={cn("h-3 w-3 text-sidebar-foreground/75 dark:text-zinc-300", className)}
+      className={cn("h-3 w-3 text-sidebar-foreground/75 dark:text-muted-foreground", className)}
       strokeWidth={2.4}
     />
   )

@@ -26,7 +26,7 @@ export function ForcePushDialog({ open, onClose, gitDialogs, chat, isMobile = fa
       open={open}
       onClose={onClose}
       title="Force push"
-      icon={<AlertTriangle className={cn(dialogIconClass(isMobile), "text-amber-500")} />}
+      icon={<AlertTriangle className={cn(dialogIconClass(isMobile), "text-warning")} />}
       isMobile={isMobile}
       initialFocusRef={forcePushButtonRef}
     >

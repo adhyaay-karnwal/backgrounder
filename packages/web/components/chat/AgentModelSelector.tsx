@@ -137,7 +137,7 @@ export function AgentModelSelector({
       value: model.value,
       label: model.label,
       description: needsKey ? "Requires API key" : undefined,
-      icon: needsKey ? <Key className="h-5 w-5 text-red-500" /> : undefined,
+      icon: needsKey ? <Key className="h-5 w-5 text-destructive" /> : undefined,
     }
   })
 
@@ -160,7 +160,7 @@ export function AgentModelSelector({
           onClick={() => setShowModelSheet(true)}
           className={cn(
             "flex items-center gap-1 text-sm transition-colors cursor-pointer",
-            !hasRequiredCredentials ? "text-red-500 hover:text-red-600" : "text-muted-foreground hover:text-foreground"
+            !hasRequiredCredentials ? "text-destructive hover:text-destructive" : "text-muted-foreground hover:text-foreground"
           )}
           title={getModelLabel(currentAgent, currentModel)}
         >
@@ -242,7 +242,7 @@ export function AgentModelSelector({
           }}
           className={cn(
             "flex items-center gap-1 text-sm transition-colors cursor-pointer",
-            !hasRequiredCredentials ? "text-red-500 hover:text-red-600" : "text-muted-foreground hover:text-foreground"
+            !hasRequiredCredentials ? "text-destructive hover:text-destructive" : "text-muted-foreground hover:text-foreground"
           )}
           title={getModelLabel(currentAgent, currentModel)}
         >
@@ -266,7 +266,7 @@ export function AgentModelSelector({
                   )}
                 >
                   <span>{model.label}</span>
-                  {needsKey && <Key className="h-3.5 w-3.5 text-red-500 shrink-0" />}
+                  {needsKey && <Key className="h-3.5 w-3.5 text-destructive shrink-0" />}
                 </button>
               )
             })}

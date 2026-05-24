@@ -215,7 +215,7 @@ export function SkillSearchView({ open, onOpenChange, chatId, repo }: SkillSearc
         <div className="rounded-xl border border-border bg-popover shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
-            <Zap className="h-4 w-4 text-amber-500" />
+            <Zap className="h-4 w-4 text-warning" />
             <span className="text-sm font-medium text-foreground">Skills</span>
             <span className="text-xs text-muted-foreground">
               {repo}
@@ -441,7 +441,7 @@ export function SkillSearchView({ open, onOpenChange, chatId, repo }: SkillSearc
                     key={skill.id}
                     className="flex items-center gap-3 px-4 py-3 hover:bg-accent/30 transition-colors group"
                   >
-                    <Zap className="h-4 w-4 text-amber-500 flex-shrink-0" />
+                    <Zap className="h-4 w-4 text-warning flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium text-foreground truncate">
                         {skill.fullHandle}

@@ -597,7 +597,7 @@ export function McpServersCombobox({
                         </span>
                         {s.verified && (
                           <BadgeCheck
-                            className="h-3 w-3 text-blue-500 shrink-0"
+                            className="h-3 w-3 text-info shrink-0"
                             aria-label="Verified"
                           />
                         )}

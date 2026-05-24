@@ -265,7 +265,7 @@ function TerminalComponent({ sandboxId }: PanelProps) {
       {status === "error" && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex flex-col items-center gap-2">
-            <span className="text-sm text-red-500">Terminal error</span>
+            <span className="text-sm text-destructive">Terminal error</span>
             <span className="text-xs text-muted-foreground">{errorMessage}</span>
           </div>
         </div>
@@ -273,7 +273,7 @@ function TerminalComponent({ sandboxId }: PanelProps) {
       {status === "disconnected" && (
         <div className="absolute inset-0 flex items-center justify-center bg-white/80">
           <div className="flex flex-col items-center gap-2">
-            <span className="text-sm text-yellow-600">Disconnected</span>
+            <span className="text-sm text-warning">Disconnected</span>
             <span className="text-xs text-muted-foreground">{errorMessage || "Session ended"}</span>
           </div>
         </div>

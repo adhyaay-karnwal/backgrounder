@@ -539,8 +539,8 @@ export function ChatPanel({ chat, settings, credentialFlags, showClaudeLimitDial
             </h2>
           </div>
           {showRapidFireNotification && (
-            <div className="mt-2 flex items-center justify-center gap-1.5 text-sm text-emerald-600 dark:text-emerald-400 animate-in fade-in slide-in-from-bottom-1 duration-200">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <div className="mt-2 flex items-center justify-center gap-1.5 text-sm text-success dark:text-success animate-in fade-in slide-in-from-bottom-1 duration-200">
+              <span className="h-1.5 w-1.5 rounded-full bg-success" />
               Task started
             </div>
           )}
@@ -692,8 +692,8 @@ export function ChatPanel({ chat, settings, credentialFlags, showClaudeLimitDial
           : (hasQueued ? "px-[31px] pt-0 pb-4" : "px-[31px] pb-4 pt-2")
       )}>
         {showRapidFireNotification && (
-          <div className="mb-2 flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 animate-in fade-in slide-in-from-bottom-1 duration-200">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          <div className="mb-2 flex items-center gap-1.5 text-xs text-success dark:text-success animate-in fade-in slide-in-from-bottom-1 duration-200">
+            <span className="h-1.5 w-1.5 rounded-full bg-success" />
             Task started
           </div>
         )}

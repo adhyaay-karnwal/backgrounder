@@ -3,6 +3,7 @@
 import * as Dialog from "@radix-ui/react-dialog"
 import { AlertTriangle, Github } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { ModalHeader, focusChatPrompt } from "@/components/ui/modal-header"
 import { signInWithGitHub } from "@/lib/auth-utils"
 
@@ -44,7 +45,7 @@ export function ReAuthModal({ open, onClose, isMobile = false }: ReAuthModalProp
           <ModalHeader
             title={
               <>
-                <AlertTriangle className="h-4 w-4 text-amber-500" />
+                <AlertTriangle className="h-4 w-4 text-warning" />
                 GitHub authorization expired
               </>
             }
@@ -62,17 +63,15 @@ export function ReAuthModal({ open, onClose, isMobile = false }: ReAuthModalProp
               Your GitHub access has expired or been revoked. Please authorize again to continue working with repositories, branches, and other GitHub features.
             </p>
 
-            <button
+            <Button
               autoFocus
               onClick={handleReAuth}
-              className={cn(
-                "w-full flex items-center justify-center gap-2 rounded-md bg-[#24292f] text-white hover:bg-[#24292f]/90 active:bg-[#24292f]/80 transition-colors font-medium cursor-pointer",
-                isMobile ? "px-6 py-3 text-base" : "px-4 py-2.5 text-sm"
-              )}
+              size={isMobile ? "lg" : "default"}
+              className="w-full"
             >
-              <Github className={cn(isMobile ? "h-5 w-5" : "h-4 w-4")} />
+              <Github />
               Authorize with GitHub
-            </button>
+            </Button>
           </div>
 
           {/* Footer */}

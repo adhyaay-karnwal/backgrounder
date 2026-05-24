@@ -65,7 +65,7 @@ export function SquashDialog({ open, onClose, gitDialogs, chat, isMobile = false
 
         {!gitDialogs.commitsLoading && gitDialogs.commitsAhead < 2 && (
           <p className={cn(
-            "text-amber-500",
+            "text-warning",
             isMobile ? "text-sm" : "text-xs"
           )}>
             Need at least 2 commits to squash.

@@ -281,7 +281,7 @@ export function ChatInput({
               <button
                 onClick={onStop}
                 className={cn(
-                  "flex items-center justify-center rounded-md bg-red-500 text-white hover:bg-red-600 active:bg-red-700 transition-colors",
+                  "flex items-center justify-center rounded-md bg-destructive text-white hover:bg-destructive/90 active:bg-destructive/80 transition-colors",
                   isMobile ? "h-9 w-9" : "h-7 w-7"
                 )}
               >
