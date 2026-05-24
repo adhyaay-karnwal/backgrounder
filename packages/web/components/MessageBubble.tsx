@@ -43,7 +43,7 @@ export const MessageBubble = memo(function MessageBubble({ message, isStreaming,
         {isUser ? (
           <div className="min-w-0">
             <div className={cn(
-              "inline-block rounded-lg bg-muted text-foreground text-left max-w-full min-w-0",
+              "inline-block rounded-xl border border-border bg-secondary/50 text-secondary-foreground text-left max-w-full min-w-0",
               isMobile ? "px-3 py-2 text-base" : "px-4 py-2 text-[15px]"
             )}>
               <MarkdownContent text={message.content} isMobile={isMobile} constrainWidth={false} />

@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { useSession, signOut } from "next-auth/react"
 import { signInWithGitHub } from "@/lib/auth-utils"
-import { Plus, PanelLeft, X, FolderGit2, Loader2, Clock, Search, ChevronDown, Check, BarChart3, Settings, HelpCircle, LogOut } from "lucide-react"
+import { Plus, PanelLeft, X, FolderGit2, Loader2, Clock, Search, ChevronDown, Check, BarChart3, Settings, HelpCircle, LogOut, SquarePen } from "lucide-react"
 import { usePalette } from "@/components/search-palette/PaletteProvider"
 import { cn } from "@/lib/utils"
 import { useClickOutside } from "@/lib/hooks/useClickOutside"
@@ -476,10 +476,10 @@ export function Sidebar({
             {/* New Chat Button - larger touch target */}
             <button
               onClick={handleNewChat}
-              className="flex items-center gap-3 w-full px-3 py-3 rounded-lg transition-colors touch-target hover:bg-accent/50 active:bg-accent"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base text-sidebar-foreground transition-colors touch-target hover:bg-sidebar-accent/60 active:bg-sidebar-accent"
             >
-              <Plus className="h-5 w-5 text-muted-foreground" />
-              <span className="text-base text-foreground">New Chat</span>
+              <SquarePen className="size-5 text-muted-foreground" />
+              <span>New chat</span>
             </button>
 
             {/* Search Chats Button */}
@@ -488,10 +488,10 @@ export function Sidebar({
                 openSearch()
                 if (onMobileClose) onMobileClose()
               }}
-              className="flex items-center gap-3 w-full px-3 py-3 rounded-lg transition-colors touch-target hover:bg-accent/50 active:bg-accent"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base text-sidebar-foreground transition-colors touch-target hover:bg-sidebar-accent/60 active:bg-sidebar-accent"
             >
-              <Search className="h-5 w-5 text-muted-foreground" />
-              <span className="text-base text-foreground">Search Chats</span>
+              <Search className="size-5 text-muted-foreground" />
+              <span>Search chats</span>
             </button>
 
             {/* Scheduled Jobs Button */}
@@ -504,14 +504,14 @@ export function Sidebar({
                 }
               }}
               className={cn(
-                "flex items-center gap-3 w-full px-3 py-3 rounded-lg transition-colors touch-target",
+                "flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base transition-colors touch-target",
                 scheduledJobsActive && !selectedScheduledJob
-                  ? "bg-accent text-accent-foreground"
-                  : "hover:bg-accent/50 active:bg-accent"
+                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent/60 active:bg-sidebar-accent"
               )}
             >
-              <Clock className={cn("h-5 w-5", scheduledJobsActive && !selectedScheduledJob ? "text-foreground" : "text-muted-foreground")} />
-              <span className="text-base text-foreground">Scheduled Agents</span>
+              <Clock className={cn("size-5", scheduledJobsActive && !selectedScheduledJob ? "text-sidebar-accent-foreground" : "text-muted-foreground")} />
+              <span>Scheduled agents</span>
             </button>
           </div>
 
@@ -703,29 +703,29 @@ export function Sidebar({
       </div>
 
       {/* Action Buttons - grouped together */}
-      <div className={cn(collapsed ? "px-0 flex flex-col items-center gap-1.5" : "px-2")}>
-        {/* New Chat Button */}
+      <div className={cn(collapsed ? "px-0 flex flex-col items-center gap-1.5" : "px-2 space-y-0.5")}>
+        {/* New Chat Button — primary action, Terragon-style */}
         <button
           onClick={onNewChat}
           className={cn(
-            "flex items-center gap-2 rounded-md transition-colors hover:bg-accent/50 cursor-pointer",
+            "flex items-center gap-2 rounded-md text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent/60 active:bg-sidebar-accent cursor-pointer",
             collapsed ? "p-1.5" : "w-full px-2 py-[7px]"
           )}
         >
-          <Plus className="h-4 w-4 text-muted-foreground" />
-          {!collapsed && <span className="text-sm text-foreground">New Chat</span>}
+          <SquarePen className="size-4 text-muted-foreground" />
+          {!collapsed && <span>New chat</span>}
         </button>
 
         {/* Search Chats Button */}
         <button
           onClick={openSearch}
           className={cn(
-            "flex items-center gap-2 rounded-md transition-colors hover:bg-accent/50 cursor-pointer",
+            "flex items-center gap-2 rounded-md text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent/60 active:bg-sidebar-accent cursor-pointer",
             collapsed ? "p-1.5" : "w-full px-2 py-[7px]"
           )}
         >
-          <Search className="h-4 w-4 text-muted-foreground" />
-          {!collapsed && <span className="text-sm text-foreground">Search Chats</span>}
+          <Search className="size-4 text-muted-foreground" />
+          {!collapsed && <span>Search chats</span>}
         </button>
 
         {/* Scheduled Jobs Button */}
@@ -738,15 +738,15 @@ export function Sidebar({
             }
           }}
           className={cn(
-            "flex items-center gap-2 rounded-md transition-colors cursor-pointer",
+            "flex items-center gap-2 rounded-md text-sm transition-colors cursor-pointer",
             collapsed ? "p-1.5" : "w-full px-2 py-[7px]",
             scheduledJobsActive && !selectedScheduledJob
-              ? "bg-accent text-accent-foreground"
-              : "hover:bg-accent/50"
+              ? "bg-sidebar-accent text-sidebar-accent-foreground"
+              : "text-sidebar-foreground hover:bg-sidebar-accent/60 active:bg-sidebar-accent"
           )}
         >
-          <Clock className={cn("h-4 w-4", scheduledJobsActive && !selectedScheduledJob ? "text-foreground" : "text-muted-foreground")} />
-          {!collapsed && <span className="text-sm text-foreground">Scheduled Agents</span>}
+          <Clock className={cn("size-4", scheduledJobsActive && !selectedScheduledJob ? "text-sidebar-accent-foreground" : "text-muted-foreground")} />
+          {!collapsed && <span>Scheduled agents</span>}
         </button>
       </div>
 

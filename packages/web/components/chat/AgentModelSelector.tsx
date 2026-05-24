@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { ChevronDown, Key, Cpu } from "lucide-react"
+import { Check, ChevronDown, Key, Cpu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useModals } from "@/lib/contexts"
 import type { Agent, ModelOption, CredentialFlags, Chat } from "@/lib/types"
@@ -9,6 +9,14 @@ import { agentModels, agentLabels, getModelLabel, hasCredentialsForModel, getDef
 import { AgentIcon } from "../icons/agent-icons"
 import { MobileSelect } from "../ui/MobileBottomSheet"
 import type { HighlightKey } from "../modals/SettingsModal"
+
+// Trigger pill — matches Terragon's ResponsiveCombobox chip on a tighter scale.
+const triggerClass =
+  "inline-flex items-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring cursor-pointer"
+
+// Menu item — matches Terragon's Select/Command item: check on selected, hover bg.
+const itemClass =
+  "relative flex w-full cursor-pointer items-center gap-2 rounded-sm py-1.5 pr-2 pl-7 text-sm text-foreground outline-none hover:bg-accent hover:text-accent-foreground"
 
 // =============================================================================
 // AgentModelSelector - Dropdown selectors for agent and model
@@ -204,28 +212,33 @@ export function AgentModelSelector({
             setShowModelDropdown(false)
             if (opening) onDropdownOpen?.()
           }}
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground active:text-foreground transition-colors cursor-pointer"
+          className={triggerClass}
           title={agentLabels[currentAgent]}
         >
-          <AgentIcon agent={currentAgent} className="h-3.5 w-3.5" />
-          <span className="hidden @[32rem]:inline">{agentLabels[currentAgent]}</span>
-          <ChevronDown className="h-3.5 w-3.5" />
+          <AgentIcon agent={currentAgent} className="size-3.5" />
+          <span className="hidden @[32rem]:inline">
+            {agentLabels[currentAgent]}
+          </span>
+          <ChevronDown className="size-3.5 opacity-50" />
         </button>
         {showAgentDropdown && (
-          <div className="absolute bottom-full right-0 mb-1 bg-popover border border-border rounded-md shadow-lg py-1 z-50 w-40">
-            {agents.map((agent) => (
-              <button
-                key={agent}
-                onClick={() => handleAgentChange(agent)}
-                className={cn(
-                  "w-full text-left hover:bg-accent active:bg-accent transition-colors flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer",
-                  agent === currentAgent && "bg-accent"
-                )}
-              >
-                <AgentIcon agent={agent} className="h-3.5 w-3.5" />
-                {agentLabels[agent]}
-              </button>
-            ))}
+          <div className="absolute bottom-full right-0 z-50 mb-1 w-44 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md">
+            {agents.map((agent) => {
+              const isSelected = agent === currentAgent
+              return (
+                <button
+                  key={agent}
+                  onClick={() => handleAgentChange(agent)}
+                  className={itemClass}
+                >
+                  <span className="absolute left-2 flex size-3.5 items-center justify-center">
+                    {isSelected && <Check className="size-3.5" />}
+                  </span>
+                  <AgentIcon agent={agent} className="size-3.5" />
+                  <span>{agentLabels[agent]}</span>
+                </button>
+              )
+            })}
           </div>
         )}
       </div>
@@ -241,32 +254,42 @@ export function AgentModelSelector({
             if (opening) onDropdownOpen?.()
           }}
           className={cn(
-            "flex items-center gap-1 text-sm transition-colors cursor-pointer",
-            !hasRequiredCredentials ? "text-destructive hover:text-destructive" : "text-muted-foreground hover:text-foreground"
+            triggerClass,
+            !hasRequiredCredentials &&
+              "text-destructive hover:bg-destructive/10 hover:text-destructive"
           )}
           title={getModelLabel(currentAgent, currentModel)}
         >
-          {!hasRequiredCredentials && <Key className="h-3.5 w-3.5" />}
-          <Cpu className="h-3.5 w-3.5 @[32rem]:hidden" />
-          <span className="hidden @[32rem]:inline">{getModelLabel(currentAgent, currentModel)}</span>
-          <ChevronDown className="h-3.5 w-3.5" />
+          {!hasRequiredCredentials && <Key className="size-3.5" />}
+          <Cpu className="size-3.5 @[32rem]:hidden" />
+          <span className="hidden @[32rem]:inline">
+            {getModelLabel(currentAgent, currentModel)}
+          </span>
+          <ChevronDown className="size-3.5 opacity-50" />
         </button>
         {showModelDropdown && (
-          <div className="absolute bottom-full right-0 mb-1 max-h-64 overflow-y-auto bg-popover border border-border rounded-md shadow-lg py-1 z-50 w-52">
+          <div className="absolute bottom-full right-0 z-50 mb-1 max-h-64 w-56 overflow-y-auto rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md">
             {availableModels.map((model: ModelOption) => {
-              const modelHasCredentials = hasCredentialsForModel(model, credentialFlags, currentAgent)
+              const modelHasCredentials = hasCredentialsForModel(
+                model,
+                credentialFlags,
+                currentAgent
+              )
               const needsKey = model.requiresKey !== "none" && !modelHasCredentials
+              const isSelected = model.value === currentModel
               return (
                 <button
                   key={model.value}
                   onClick={() => handleModelChange(model.value)}
-                  className={cn(
-                    "w-full text-left hover:bg-accent active:bg-accent transition-colors flex items-center justify-between px-3 py-1.5 text-sm cursor-pointer",
-                    model.value === currentModel && "bg-accent"
-                  )}
+                  className={cn(itemClass, "justify-between")}
                 >
-                  <span>{model.label}</span>
-                  {needsKey && <Key className="h-3.5 w-3.5 text-destructive shrink-0" />}
+                  <span className="absolute left-2 flex size-3.5 items-center justify-center">
+                    {isSelected && <Check className="size-3.5" />}
+                  </span>
+                  <span className="truncate">{model.label}</span>
+                  {needsKey && (
+                    <Key className="size-3.5 shrink-0 text-destructive" />
+                  )}
                 </button>
               )
             })}

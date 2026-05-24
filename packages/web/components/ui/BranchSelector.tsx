@@ -126,7 +126,7 @@ export function BranchSelector({ value, onChange, branches, loading, placeholder
     <div ref={containerRef} className="relative">
       <div
         className={cn(
-          "w-full flex items-center bg-input border border-border rounded-md focus-within:ring-2 focus-within:ring-ring",
+          "flex w-full items-center rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 dark:bg-input/30",
           isMobile ? "px-4 py-3 text-base" : "px-3 py-2 text-sm"
         )}
       >
@@ -161,7 +161,7 @@ export function BranchSelector({ value, onChange, branches, loading, placeholder
       {open && !loading && (
         <div
           ref={listRef}
-          className="absolute z-10 w-full mt-1 bg-popover border border-border rounded-md shadow-lg max-h-48 overflow-y-auto"
+          className="absolute z-50 mt-1 max-h-56 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md"
         >
           {filteredBranches.length === 0 ? (
             <div className={cn(
@@ -182,9 +182,11 @@ export function BranchSelector({ value, onChange, branches, loading, placeholder
                 }}
                 onMouseEnter={() => setHighlightedIndex(index)}
                 className={cn(
-                  "w-full text-left px-3 py-2 transition-colors",
+                  "flex w-full cursor-pointer items-center rounded-sm px-2 py-1.5 text-left transition-colors",
                   isMobile ? "text-base" : "text-sm",
-                  index === highlightedIndex ? "bg-accent" : "hover:bg-accent/50"
+                  index === highlightedIndex
+                    ? "bg-accent text-accent-foreground"
+                    : "text-foreground hover:bg-accent/50"
                 )}
               >
                 {label(branch)}

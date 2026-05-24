@@ -175,10 +175,10 @@ export function ChatInput({
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         className={cn(
-          "relative flex flex-col border shadow-sm bg-card border-border",
+          "relative flex flex-col border border-border bg-card shadow-xs transition-[box-shadow,border-color]",
           isMobile ? "rounded-xl" : "rounded-2xl",
-          "focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20",
-          isDraggingOver && "border-primary ring-2 ring-primary/30"
+          "focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50",
+          isDraggingOver && "border-ring ring-[3px] ring-ring/50"
         )}
       >
         {/* Drop zone overlay */}
