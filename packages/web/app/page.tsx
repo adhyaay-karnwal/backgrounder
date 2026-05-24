@@ -20,6 +20,7 @@ import { MergeDialog, RebaseDialog, PRDialog, SquashDialog, ForcePushDialog, use
 import { EnvironmentVariablesModal } from "@/components/modals/EnvironmentVariablesModal"
 import { MobileCommandsMenu } from "@/components/MobileCommandsMenu"
 import { MobileRenameModal } from "@/components/ui/MobileBottomSheet"
+import { AppShell } from "@/components/layout"
 import { ScheduledJobForm } from "@/components/scheduled-jobs/ScheduledJobForm"
 import { ScheduledJobsView } from "@/components/scheduled-jobs/ScheduledJobsView"
 import { SkillSearchView } from "@/components/skills/SkillSearchView"
@@ -1292,7 +1293,7 @@ function HomePageContent({ isMobile }: HomePageContentProps) {
     >
     <ChatProvider value={chatContextValue}>
     <GitProvider value={gitContextValue}>
-    <div className={`flex overflow-hidden ${isMobile ? 'h-screen-mobile' : 'h-screen'}`}>
+    <AppShell className={isMobile ? 'h-screen-mobile' : 'h-screen'}>
       {/* Desktop Sidebar */}
       {!isMobile && (
         <Sidebar
@@ -1359,7 +1360,7 @@ function HomePageContent({ isMobile }: HomePageContentProps) {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <AppShell.Main>
         {/* Mobile Header */}
         {isMobile && (
           <MobileHeader
@@ -1443,7 +1444,7 @@ function HomePageContent({ isMobile }: HomePageContentProps) {
               </>
             )}
           </div>
-      </div>
+      </AppShell.Main>
 
       {/* Transparent full-screen shield during split drag so the cursor isn't
           swallowed by iframes or other child elements. */}
@@ -1622,7 +1623,7 @@ function HomePageContent({ isMobile }: HomePageContentProps) {
         resetAt={limitReachedState.resetAt}
         isMobile={isMobile}
       />
-    </div>
+    </AppShell>
     </GitProvider>
     </ChatProvider>
     </PaletteProvider>

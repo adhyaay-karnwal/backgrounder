@@ -36,7 +36,7 @@ function AppShellSidebar({
     <aside
       data-slot="app-shell-sidebar"
       className={cn(
-        "hidden h-full w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex",
+        "hidden h-full shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex",
         className
       )}
       {...props}

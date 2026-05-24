@@ -533,10 +533,13 @@ export function ChatPanel({ chat, settings, credentialFlags, showClaudeLimitDial
             <Github className="h-3.5 w-3.5" />
             Backgrounder is open source.
           </a>
-          <div className="text-center mb-6">
-            <h2 className={cn("font-semibold", isMobile ? "text-xl" : "text-2xl")}>
+          <div className="text-center mb-8 animate-in fade-in zoom-in-95 duration-700">
+            <h2 className={cn("font-bold tracking-tight text-foreground animate-shine", isMobile ? "text-2xl" : "text-4xl")}>
               What would you like to build?
             </h2>
+            <p className="mt-2 text-muted-foreground font-medium">
+              Terragon Agent at your service.
+            </p>
           </div>
           {showRapidFireNotification && (
             <div className="mt-2 flex items-center justify-center gap-1.5 text-sm text-success dark:text-success animate-in fade-in slide-in-from-bottom-1 duration-200">
@@ -546,11 +549,11 @@ export function ChatPanel({ chat, settings, credentialFlags, showClaudeLimitDial
           )}
           {chatInput}
           <div className={cn(
-            "text-muted-foreground mt-4 text-center",
-            isMobile ? "text-sm px-4" : "text-sm"
+            "text-muted-foreground/40 mt-8 text-center animate-in fade-in slide-in-from-top-2 duration-1000",
+            isMobile ? "text-xs px-4" : "text-xs"
           )}>
-            <p>
-              Changes will apply when you type /merge. Access tools with ⌘K.
+            <p className="font-mono uppercase tracking-widest text-[10px]">
+              Changes apply on /merge · ⌘K for tools
             </p>
           </div>
         </div>

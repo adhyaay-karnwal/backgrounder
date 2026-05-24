@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 import { useClickOutside } from "@/lib/hooks/useClickOutside"
 import { useElectron } from "@/lib/hooks/useElectron"
 import { useModals, ALL_REPOSITORIES, NO_REPOSITORY, MIN_WIDTH, MAX_WIDTH, COLLAPSED_WIDTH, COLLAPSE_THRESHOLD } from "@/lib/contexts"
+import { AppShell } from "@/components/layout/AppShell"
 import { clearAllStorage } from "@/lib/storage"
 import type { Chat } from "@/lib/types"
 import { NEW_REPOSITORY } from "@/lib/types"
@@ -452,14 +453,14 @@ export function Sidebar({
         {/* Mobile drawer */}
         <div
           ref={sidebarRef}
-          className="fixed inset-y-0 left-0 z-50 w-[280px] flex flex-col bg-background border-r border-sidebar-border transition-transform duration-300 ease-out"
+          className="fixed inset-y-0 left-0 z-50 w-[280px] flex flex-col bg-sidebar border-r border-sidebar-border transition-transform duration-300 ease-out"
           style={{
             transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
           }}
         >
           {/* Header with close button */}
-          <div className="flex items-center justify-between px-4 pt-safe">
-            <h1 className="text-base font-semibold text-foreground">
+          <div className="flex items-center justify-between px-4 pt-safe h-14">
+            <h1 className="text-base font-semibold text-sidebar-foreground">
               Background Agents
             </h1>
             <button
@@ -669,10 +670,10 @@ export function Sidebar({
 
   // Desktop sidebar rendering (original behavior)
   return (
-    <div
+    <AppShell.Sidebar
       ref={sidebarRef}
       className={cn(
-        "relative flex h-full flex-col bg-background border-r border-sidebar-border hide-mobile",
+        "relative hide-mobile",
         isAnimating && "transition-[width] duration-200 ease-in-out"
       )}
       style={{ width: collapsed ? COLLAPSED_WIDTH : width }}
@@ -680,14 +681,14 @@ export function Sidebar({
       {/* Header */}
       <div
         className={cn(
-          "flex items-center p-3",
+          "flex items-center px-4 h-14 shrink-0",
           collapsed ? "justify-center" : "justify-between"
         )}
         style={isDesktopApp ? { WebkitAppRegion: "drag" } as React.CSSProperties : undefined}
       >
         {!collapsed && (
           <h1 className={cn(
-            "text-sm font-semibold text-foreground truncate",
+            "text-sm font-semibold text-sidebar-foreground truncate",
             isDesktopApp && "invisible" // Hide text but keep space for window controls
           )}>
             Background Agents
@@ -859,7 +860,7 @@ export function Sidebar({
           className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-muted-foreground/30 active:bg-muted-foreground/50 transition-colors"
         />
       )}
-    </div>
+    </AppShell.Sidebar>
   )
 }
 

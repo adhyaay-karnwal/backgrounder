@@ -147,8 +147,8 @@ export function ChatItem({
           isDeleting
             ? "cursor-not-allowed opacity-50"
             : isActive
-              ? "bg-sidebar-accent text-sidebar-accent-foreground"
-              : "cursor-pointer text-sidebar-foreground hover:bg-sidebar-accent/50"
+            ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
+            : "cursor-pointer text-sidebar-foreground hover:bg-sidebar-accent/60"
         )}
       >
         <AgentIcon agent={(chat.agent ?? "claude-code") as Parameters<typeof AgentIcon>[0]["agent"]} className="size-4" />
@@ -180,8 +180,8 @@ export function ChatItem({
         isDeleting && "cursor-not-allowed opacity-50",
         !isDeleting &&
           (isActive
-            ? "bg-sidebar-accent text-sidebar-accent-foreground"
-            : "hover:bg-sidebar-accent/50 text-sidebar-foreground"),
+            ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm font-semibold"
+            : "hover:bg-sidebar-accent/60 text-sidebar-foreground"),
         menuOpen && "bg-sidebar-accent/50",
         isDragSource && "opacity-50",
         isDropTarget && "ring-2 ring-primary/60 bg-primary/10"
@@ -288,7 +288,10 @@ export function ChatItem({
             />
           ) : (
             <p
-              className="min-w-0 flex-1 truncate text-sm font-medium"
+              className={cn(
+                "min-w-0 flex-1 truncate text-sm",
+                isActive ? "font-semibold" : "font-medium"
+              )}
               title={displayName}
             >
               {displayName}
@@ -297,8 +300,8 @@ export function ChatItem({
         </div>
 
         {/* Row 2: time · repo + agent icon */}
-        <div className="flex items-center justify-between gap-2 pl-[18px]">
-          <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between gap-2 pl-[18px] opacity-80 group-hover:opacity-100 transition-opacity">
+          <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground font-medium">
             <span
               className="shrink-0"
               title={new Date(chat.updatedAt).toLocaleString()}
@@ -307,8 +310,8 @@ export function ChatItem({
             </span>
             {chat.branch && chat.repo !== NEW_REPOSITORY && (
               <>
-                <span className="shrink-0">·</span>
-                <span className="truncate font-mono" title={chat.branch}>
+                <span className="shrink-0 opacity-50">·</span>
+                <span className="truncate font-mono text-[10px] tracking-tight" title={chat.branch}>
                   {chat.branch}
                 </span>
               </>
