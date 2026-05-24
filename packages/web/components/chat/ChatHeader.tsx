@@ -81,7 +81,7 @@ export function ChatHeader({
 
   return (
     <div
-      className="flex items-center justify-between pt-3"
+      className="flex items-center justify-between h-14 shrink-0 border-b border-border/50 bg-background/50 backdrop-blur-md sticky top-0 z-10"
       style={{
         paddingLeft: "1.625rem",
         paddingRight: "1rem",

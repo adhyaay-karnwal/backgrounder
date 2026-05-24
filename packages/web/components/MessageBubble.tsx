@@ -41,9 +41,9 @@ export const MessageBubble = memo(function MessageBubble({ message, isStreaming,
         isUser && (isMobile ? "max-w-[95%]" : "max-w-[90%]")
       )}>
         {isUser ? (
-          <div className="min-w-0">
+          <div className="min-w-0 animate-in fade-in slide-in-from-bottom-2 duration-300">
             <div className={cn(
-              "inline-block rounded-xl border border-border bg-secondary/50 text-secondary-foreground text-left max-w-full min-w-0",
+              "inline-block rounded-2xl border border-border bg-secondary/50 text-secondary-foreground text-left max-w-full min-w-0 shadow-xs",
               isMobile ? "px-3 py-2 text-base" : "px-4 py-2 text-[15px]"
             )}>
               <MarkdownContent text={message.content} isMobile={isMobile} constrainWidth={false} />
@@ -131,7 +131,7 @@ function AssistantContent({ message, isStreaming, isMobile = false, repo, onOpen
 
   return (
     <div className={cn(
-      "w-full leading-relaxed",
+      "w-full leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-500",
       isMobile ? "space-y-4 text-base" : "space-y-3 text-[15px]"
     )}>
       {mergedBlocks ? (

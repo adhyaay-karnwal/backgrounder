@@ -175,9 +175,9 @@ export function ChatInput({
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         className={cn(
-          "relative flex flex-col border border-border bg-card shadow-xs transition-[box-shadow,border-color]",
+          "relative flex flex-col border border-border bg-card shadow-sm transition-[box-shadow,border-color] duration-200",
           isMobile ? "rounded-xl" : "rounded-2xl",
-          "focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50",
+          "focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 focus-within:shadow-md",
           isDraggingOver && "border-ring ring-[3px] ring-ring/50"
         )}
       >
@@ -470,7 +470,7 @@ export function ChatInput({
                         }}
                         className={cn(
                           "w-full text-left hover:bg-accent active:bg-accent transition-colors flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer",
-                          !planModeEnabled && "bg-accent"
+                        !planModeEnabled && "bg-accent/50 font-semibold"
                         )}
                       >
                         <Pencil className="h-3.5 w-3.5" />
@@ -483,7 +483,7 @@ export function ChatInput({
                         }}
                         className={cn(
                           "w-full text-left hover:bg-accent active:bg-accent transition-colors flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer",
-                          planModeEnabled && "bg-accent"
+                        planModeEnabled && "bg-accent/50 font-semibold"
                         )}
                       >
                         <ListChecks className="h-3.5 w-3.5" />
