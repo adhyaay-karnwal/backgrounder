@@ -152,8 +152,8 @@ function MobileUserCard({
           className={cn(
             "inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-colors",
             user.isPro
-              ? "bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400",
+              ? "bg-warning/10 text-warning hover:bg-warning/20"
+              : "bg-muted text-muted-foreground hover:bg-muted/70",
             "disabled:cursor-not-allowed disabled:opacity-50"
           )}
         >
@@ -166,8 +166,8 @@ function MobileUserCard({
           className={cn(
             "inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-colors",
             user.isAdmin
-              ? "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400",
+              ? "bg-primary/10 text-primary hover:bg-primary/20"
+              : "bg-muted text-muted-foreground hover:bg-muted/70",
             "disabled:cursor-not-allowed disabled:opacity-50"
           )}
         >
@@ -383,8 +383,8 @@ export function UserTable({
                         disabled={isUpdating === user.id}
                         className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium transition-colors ${
                           user.isPro
-                            ? "bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
+                            ? "bg-warning/10 text-warning hover:bg-warning/20"
+                            : "bg-muted text-muted-foreground hover:bg-muted/70"
                         } disabled:cursor-not-allowed disabled:opacity-50`}
                         title={user.isPro ? "Click to remove Pro status" : "Click to grant Pro status"}
                       >
@@ -398,8 +398,8 @@ export function UserTable({
                         disabled={isUpdating === user.id || user.id === currentUserId}
                         className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium transition-colors ${
                           user.isAdmin
-                            ? "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
+                            ? "bg-primary/10 text-primary hover:bg-primary/20"
+                            : "bg-muted text-muted-foreground hover:bg-muted/70"
                         } disabled:cursor-not-allowed disabled:opacity-50`}
                         title={
                           user.id === currentUserId

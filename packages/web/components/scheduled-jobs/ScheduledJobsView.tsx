@@ -492,7 +492,7 @@ export function ScheduledJobsView({ onOpenForm, refreshKey, urlJobId, onNavigate
               {jobs.map((job) => (
                 <div
                   key={job.id}
-                  className="rounded-lg border border-border bg-white/50 dark:bg-white/5 p-4 cursor-pointer"
+                  className="rounded-lg border border-border bg-card/60 dark:bg-card p-4 cursor-pointer"
                   onClick={() => setSelectedJobId(job.id, job.name)}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -598,7 +598,7 @@ export function ScheduledJobsView({ onOpenForm, refreshKey, urlJobId, onNavigate
                   {jobs.map((job) => (
                     <tr
                       key={job.id}
-                      className="bg-white/50 dark:bg-white/5 cursor-pointer"
+                      className="bg-card/60 dark:bg-card cursor-pointer"
                       onClick={() => setSelectedJobId(job.id, job.name)}
                     >
                       <td className="px-4 py-3">

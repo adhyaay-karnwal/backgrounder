@@ -2,7 +2,9 @@
 
 import { useCallback, useRef, useEffect } from "react"
 import * as Dialog from "@radix-ui/react-dialog"
+
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { ModalHeader, focusChatPrompt } from "@/components/ui/modal-header"
 
 interface ConfirmDialogProps {
@@ -35,10 +37,8 @@ export function ConfirmDialog({
     onClose()
   }, [onConfirm, onClose])
 
-  // Focus the confirm button when modal opens
   useEffect(() => {
     if (open) {
-      // Small delay to ensure the modal is fully rendered
       const timer = setTimeout(() => {
         confirmButtonRef.current?.focus()
       }, 0)
@@ -49,47 +49,52 @@ export function ConfirmDialog({
   return (
     <Dialog.Root open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <Dialog.Portal>
-        <Dialog.Overlay className={cn(
-          "fixed inset-0 z-50 transition-opacity duration-300 bg-black/15 backdrop-blur-[1px]",
-          open ? "opacity-100" : "opacity-0"
-        )} />
+        <Dialog.Overlay
+          className={cn(
+            "fixed inset-0 z-50 bg-black/50 transition-opacity duration-300 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0"
+          )}
+        />
         <Dialog.Content
           onOpenAutoFocus={(e) => {
             e.preventDefault()
             confirmButtonRef.current?.focus()
           }}
-          onCloseAutoFocus={(e) => { e.preventDefault(); focusChatPrompt() }}
+          onCloseAutoFocus={(e) => {
+            e.preventDefault()
+            focusChatPrompt()
+          }}
           className={cn(
-            "fixed z-50 bg-popover overflow-hidden flex flex-col",
+            "fixed z-50 flex flex-col overflow-hidden bg-background border border-border shadow-lg",
+            "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+            "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
             isMobile
               ? "inset-x-4 top-1/2 -translate-y-1/2 rounded-xl"
-              : "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm border border-border rounded-xl shadow-xl"
+              : "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm rounded-xl"
           )}
         >
           <ModalHeader title={title} />
-          <div className="px-4 pt-3 pb-4 space-y-4 text-sm">
-            {description && (
+          <div className="space-y-4 px-4 pt-3 pb-4 text-sm">
+            {description ? (
               <div className="text-muted-foreground">{description}</div>
-            )}
+            ) : null}
             <div className="flex justify-end gap-2 pt-1">
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={onClose}
-                className="rounded-md hover:bg-accent transition-colors px-3 py-1.5 text-sm cursor-pointer"
+                type="button"
               >
                 {cancelLabel}
-              </button>
-              <button
+              </Button>
+              <Button
                 ref={confirmButtonRef}
+                variant={variant === "destructive" ? "destructive" : "default"}
+                size="sm"
                 onClick={handleConfirm}
-                className={cn(
-                  "rounded-md transition-colors px-3 py-1.5 text-sm cursor-pointer",
-                  variant === "destructive"
-                    ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    : "bg-primary text-primary-foreground hover:bg-primary/90"
-                )}
+                type="button"
               >
                 {confirmLabel}
-              </button>
+              </Button>
             </div>
           </div>
         </Dialog.Content>

@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { signIn, useSession } from "next-auth/react"
+import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 
 /**
  * Electron OAuth Start Page
@@ -25,11 +29,8 @@ export default function ElectronStartPage() {
     if (status === "loading") return
 
     if (status === "authenticated" && session?.user?.id) {
-      // Already authenticated - generate token and redirect to Electron
       generateTokenAndRedirect()
     } else if (status === "unauthenticated") {
-      // Not authenticated - start OAuth flow
-      // callbackUrl points back to this page after OAuth completes
       signIn("github", {
         callbackUrl: "/auth/electron-start",
       })
@@ -53,10 +54,8 @@ export default function ElectronStartPage() {
 
       const { token } = await response.json()
 
-      // Mark as redirected to show success message
       setRedirected(true)
 
-      // Redirect to Electron via deep link
       window.location.href = `background-agents://auth?token=${encodeURIComponent(token)}`
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error")
@@ -64,52 +63,55 @@ export default function ElectronStartPage() {
     }
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center p-6 max-w-md">
-          <div className="text-red-500 text-4xl mb-4">!</div>
-          <h1 className="text-xl font-semibold mb-2 text-gray-900">Authentication Error</h1>
-          <p className="text-gray-600 mb-6">{error}</p>
-          <button
-            onClick={() => {
-              setError(null)
-              setRedirecting(false)
-              window.location.reload()
-            }}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  if (redirected) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center p-6 max-w-md">
-          <div className="text-green-500 text-4xl mb-4">✓</div>
-          <h1 className="text-xl font-semibold mb-2 text-gray-900">Signed in successfully!</h1>
-          <p className="text-gray-600">You can close this tab and return to the app.</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="text-center">
-        <div className="animate-spin h-8 w-8 border-2 border-gray-800 border-t-transparent rounded-full mx-auto mb-4" />
-        <p className="text-gray-600">
-          {status === "loading"
-            ? "Loading..."
-            : status === "authenticated"
-              ? "Redirecting to app..."
-              : "Signing in with GitHub..."}
-        </p>
-      </div>
+    <div className="flex min-h-screen items-center justify-center bg-background p-6">
+      <Card className="w-full max-w-md text-center">
+        <CardContent className="flex flex-col items-center gap-4 py-2">
+          {error ? (
+            <>
+              <div className="flex size-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                <AlertCircle className="size-6" />
+              </div>
+              <div className="space-y-1">
+                <h1 className="text-lg font-semibold">Authentication error</h1>
+                <p className="text-sm text-muted-foreground">{error}</p>
+              </div>
+              <Button
+                onClick={() => {
+                  setError(null)
+                  setRedirecting(false)
+                  window.location.reload()
+                }}
+              >
+                Try again
+              </Button>
+            </>
+          ) : redirected ? (
+            <>
+              <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <CheckCircle2 className="size-6" />
+              </div>
+              <div className="space-y-1">
+                <h1 className="text-lg font-semibold">Signed in successfully</h1>
+                <p className="text-sm text-muted-foreground">
+                  You can close this tab and return to the app.
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <Loader2 className="size-6 animate-spin text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
+                {status === "loading"
+                  ? "Loading…"
+                  : status === "authenticated"
+                    ? "Redirecting to app…"
+                    : "Signing in with GitHub…"}
+              </p>
+            </>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }
