@@ -1,48 +1,77 @@
 "use client"
 
-import { Loader2 } from "lucide-react"
-import { cn } from "@/lib/utils"
+/**
+ * Composable helpers for git-style modal dialogs. Re-exports from `./dialog`
+ * are NOT pulled in here — these are plain blocks used inside dialog content
+ * areas (labels, readonly fields, footer with cancel + primary action).
+ *
+ * Use the canonical `Button` primitive from `./button` instead of the legacy
+ * inline action button.
+ */
 
-// =============================================================================
-// Dialog UI Components - Shared across git dialogs and other modal forms
-// =============================================================================
+import * as React from "react"
+import { Loader2 } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 /** Responsive label for form fields */
-export function DialogLabel({ children, isMobile = false }: { children: React.ReactNode; isMobile?: boolean }) {
+export function DialogLabel({
+  children,
+  isMobile = false,
+}: {
+  children: React.ReactNode
+  isMobile?: boolean
+}) {
   return (
-    <label className={cn(
-      "block text-muted-foreground mb-1",
-      isMobile ? "text-sm" : "text-xs"
-    )}>
+    <label
+      className={cn(
+        "block text-muted-foreground mb-1",
+        isMobile ? "text-sm" : "text-xs"
+      )}
+    >
       {children}
     </label>
   )
 }
 
 /** Readonly display field for showing current values */
-export function DialogReadonlyField({ children, isMobile = false }: { children: React.ReactNode; isMobile?: boolean }) {
+export function DialogReadonlyField({
+  children,
+  isMobile = false,
+}: {
+  children: React.ReactNode
+  isMobile?: boolean
+}) {
   return (
-    <div className={cn(
-      "bg-muted/50 rounded-md px-3 font-medium truncate",
-      isMobile ? "py-3 text-base" : "py-2 text-sm"
-    )}>
+    <div
+      className={cn(
+        "bg-muted/50 rounded-md px-3 font-medium truncate border border-border",
+        isMobile ? "py-3 text-base" : "py-2 text-sm"
+      )}
+    >
       {children}
     </div>
   )
 }
 
 /** Standard cancel button for dialogs */
-export function DialogCancelButton({ onClick, isMobile = false }: { onClick: () => void; isMobile?: boolean }) {
+export function DialogCancelButton({
+  onClick,
+  isMobile = false,
+}: {
+  onClick: () => void
+  isMobile?: boolean
+}) {
   return (
-    <button
+    <Button
+      variant="ghost"
+      size={isMobile ? "default" : "sm"}
       onClick={onClick}
-      className={cn(
-        "rounded-md hover:bg-accent transition-colors",
-        isMobile ? "px-4 py-2.5 text-base" : "px-3 py-1.5 text-sm"
-      )}
+      type="button"
     >
       Cancel
-    </button>
+    </Button>
   )
 }
 
@@ -66,24 +95,18 @@ export function DialogActionButton({
   children,
   buttonRef,
 }: DialogActionButtonProps) {
-  const variantClasses = variant === "destructive"
-    ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-    : "bg-primary text-primary-foreground hover:bg-primary/90"
-
   return (
-    <button
+    <Button
       ref={buttonRef}
       onClick={onClick}
       disabled={disabled || loading}
-      className={cn(
-        "rounded-md disabled:opacity-50 flex items-center gap-2",
-        variantClasses,
-        isMobile ? "px-4 py-2.5 text-base" : "px-3 py-1.5 text-sm"
-      )}
+      variant={variant === "destructive" ? "destructive" : "default"}
+      size={isMobile ? "default" : "sm"}
+      type="button"
     >
-      {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+      {loading && <Loader2 className="size-4 animate-spin" />}
       {children}
-    </button>
+    </Button>
   )
 }
 

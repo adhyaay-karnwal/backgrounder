@@ -1,15 +1,24 @@
 import type { Metadata, Viewport } from "next"
-import { Inter, JetBrains_Mono } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 import { Providers } from "@/components/Providers"
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
+const geistSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+  display: "swap",
+})
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "Background Agents",
   description: "An AI coding agent chat interface",
-  // PWA-ready metadata
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -21,14 +30,15 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#1a1a2e",
-  // Mobile viewport optimization
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  // Safe area support for notched devices
   viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8f5f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1a1a" },
+  ],
 }
 
 export default function RootLayout({
@@ -44,11 +54,13 @@ export default function RootLayout({
             __html: `try{if(window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.classList.add('dark')}catch(e){}`,
           }}
         />
-        {/* Prevent iOS text size adjustment */}
         <meta name="x-apple-disable-message-reformatting" />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased overflow-hidden`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased overflow-hidden`}
+      >
         <Providers>{children}</Providers>
+        <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       </body>
     </html>
   )

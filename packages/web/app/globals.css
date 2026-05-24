@@ -1,25 +1,300 @@
-@import 'tailwindcss';
+/* ============================================================================
+   Design system foundation.
+
+   Modeled on the Terragon Labs OSS design language
+   (https://github.com/terragon-labs/terragon-oss).
+
+   Tokens live in `:root` (light) and `.dark`. `@theme inline` exposes them
+   as Tailwind v4 utilities (`bg-background`, `text-foreground`, etc.).
+
+   Rules for contributors (humans and AI):
+     - Never hardcode hex/rgb/hsl in components — use tokens.
+     - Never bypass primitives in components/ui — never import @radix-ui/*
+       directly outside that folder.
+     - Add new tokens here (NOT in component files) and to the @theme block.
+
+   See packages/web/DESIGN_SYSTEM.md.
+   ============================================================================ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
 @import "xterm/css/xterm.css";
 
 @custom-variant dark (&:is(.dark *));
 
-/* sugar-high syntax highlighting */
+/* ----------------------------------------------------------------------------
+   Theme tokens (light + dark)
+   ---------------------------------------------------------------------------- */
+
+:root {
+  /* Surface */
+  --background: #f8f5f0;
+  --foreground: #3e2723;
+  --card: #f8f5f0;
+  --card-foreground: #3e2723;
+  --popover: #f8f5f0;
+  --popover-foreground: #3e2723;
+
+  /* Brand */
+  --primary: #2e7d32;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f5e9;
+  --secondary-foreground: #1b5e20;
+
+  /* Neutral surfaces */
+  --muted: #f0e9e0;
+  --muted-foreground: #6d4c41;
+  --disabled: #d4cec4;
+  --accent: #c8e6c9;
+  --accent-foreground: #1b5e20;
+
+  /* Status */
+  --destructive: #c62828;
+  --destructive-foreground: #ffffff;
+  --success: #2e7d32;
+  --warning: #b26a00;
+  --info: #1e88e5;
+
+  /* Edges */
+  --border: #e0d6c9;
+  --input: #e0d6c9;
+  --ring: #2e7d32;
+
+  /* Charts */
+  --chart-1: #4caf50;
+  --chart-2: #388e3c;
+  --chart-3: #2e7d32;
+  --chart-4: #1b5e20;
+  --chart-5: #0a1f0c;
+
+  /* Sidebar */
+  --sidebar: #fcfaf8;
+  --sidebar-foreground: #3e2723;
+  --sidebar-primary: #2e7d32;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f5f2ed;
+  --sidebar-accent-foreground: #3e2723;
+  --sidebar-border: #e8e0d6;
+  --sidebar-ring: #2e7d32;
+
+  /* Typography */
+  --font-sans:
+    "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+  --font-serif: Merriweather, serif;
+
+  /* Geometry */
+  --radius: 0.5rem;
+
+  /* Elevation */
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm:
+    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md:
+    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg:
+    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl:
+    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-out-quad: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.dark {
+  --background: #1a1a1a;
+  --foreground: #f0ebe5;
+  --card: #242424;
+  --card-foreground: #f0ebe5;
+  --popover: #242424;
+  --popover-foreground: #f0ebe5;
+
+  --primary: #4caf50;
+  --primary-foreground: #0a1f0c;
+  --secondary: #333333;
+  --secondary-foreground: #d7e0d6;
+
+  --muted: #2a2a2a;
+  --muted-foreground: #d7cfc4;
+  --disabled: #3a3a3a;
+  --accent: #2e7d32;
+  --accent-foreground: #ffffff;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --success: #4caf50;
+  --warning: #f5a623;
+  --info: #60a5fa;
+
+  --border: #4a4a4a;
+  --input: #4a4a4a;
+  --ring: #4caf50;
+
+  --chart-1: #81c784;
+  --chart-2: #66bb6a;
+  --chart-3: #4caf50;
+  --chart-4: #43a047;
+  --chart-5: #388e3c;
+
+  --sidebar: #161616;
+  --sidebar-foreground: #f0ebe5;
+  --sidebar-primary: #4caf50;
+  --sidebar-primary-foreground: #0a1f0c;
+  --sidebar-accent: #202020;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #4a4a4a;
+  --sidebar-ring: #4caf50;
+}
+
+/* ----------------------------------------------------------------------------
+   Tailwind v4 @theme — generates utilities from the tokens above
+   ---------------------------------------------------------------------------- */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-disabled: var(--disabled);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+
+  --breakpoint-xs: 24rem;
+}
+
+/* ----------------------------------------------------------------------------
+   Base layer
+   ---------------------------------------------------------------------------- */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply bg-background;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Standalone PWA bottom padding */
+  .chat-prompt-box {
+    padding-bottom: 0.5rem;
+  }
+  @media (display-mode: standalone) {
+    .chat-prompt-box {
+      padding-bottom: 2rem;
+    }
+    .sidebar-footer-pwa {
+      padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  /* Stronger focus outlines for accessibility */
+  button:focus-visible,
+  [role="combobox"]:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Safe-area + mobile-header tokens (load-bearing — do not remove)
+   ---------------------------------------------------------------------------- */
+
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --mobile-header-height: 56px;
+  --min-touch-target: 44px;
+}
+
+/* ----------------------------------------------------------------------------
+   Sugar-high / highlight.js syntax colors — re-mapped to tokens
+   ---------------------------------------------------------------------------- */
+
 :root {
   --sh-class: #1e88e5;
-  --sh-identifier: #354150;
-  --sh-sign: #8996a3;
+  --sh-identifier: #3e2723;
+  --sh-sign: #8a7a6b;
   --sh-property: #0550ae;
   --sh-entity: #6f42c1;
   --sh-jsxliterals: #0550ae;
-  --sh-string: #067d17;
-  --sh-keyword: #d32f2f;
-  --sh-comment: #8996a3;
+  --sh-string: #2e7d32;
+  --sh-keyword: #c62828;
+  --sh-comment: #8a7a6b;
 
-  /* Chart tooltip colors */
-  --tooltip-bg: #ffffff;
-  --tooltip-border: #e5e7eb;
-  --tooltip-text: #111827;
+  --tooltip-bg: #f8f5f0;
+  --tooltip-border: #e0d6c9;
+  --tooltip-text: #3e2723;
 }
+
 .dark {
   --sh-class: #89ddff;
   --sh-identifier: #d4d4d4;
@@ -31,14 +306,11 @@
   --sh-keyword: #ff79c6;
   --sh-comment: #676e95;
 
-  /* Chart tooltip colors - dark mode */
-  --tooltip-bg: #1f2937;
-  --tooltip-border: #374151;
-  --tooltip-text: #f9fafb;
+  --tooltip-bg: #242424;
+  --tooltip-border: #4a4a4a;
+  --tooltip-text: #f0ebe5;
 }
 
-/* highlight.js tokens — scoped to `.hljs-scope` so they don't leak into
-   chat markdown code blocks (which keep sugar-high / prose styling). */
 .hljs-scope .hljs-keyword,
 .hljs-scope .hljs-selector-tag,
 .hljs-scope .hljs-meta-keyword { color: var(--sh-keyword); }
@@ -62,164 +334,33 @@
 .hljs-scope .hljs-function .hljs-title { color: var(--sh-class); }
 .hljs-scope .hljs-tag { color: var(--sh-sign); }
 .hljs-scope .hljs-params { color: var(--sh-identifier); }
-.hljs-scope .hljs-deletion { color: #d32f2f; }
-.hljs-scope .hljs-addition { color: #067d17; }
+.hljs-scope .hljs-deletion { color: var(--destructive); }
+.hljs-scope .hljs-addition { color: var(--success); }
 
-/* ============================================================================
-   GitHub-style Markdown Preview
-   ============================================================================ */
+/* ----------------------------------------------------------------------------
+   GitHub-style markdown preview (uses tokens)
+   ---------------------------------------------------------------------------- */
 
 .github-markdown {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
-  color: #1f2328;
+  color: var(--foreground);
 }
+.github-markdown > *:first-child { margin-top: 0 !important; }
+.github-markdown > *:last-child { margin-bottom: 0 !important; }
 
-.dark .github-markdown {
-  color: #e6edf3;
-}
+/* ----------------------------------------------------------------------------
+   Scrollbars
+   ---------------------------------------------------------------------------- */
 
-/* Ensure proper spacing for first/last elements */
-.github-markdown > *:first-child {
-  margin-top: 0 !important;
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
 
-.github-markdown > *:last-child {
-  margin-bottom: 0 !important;
-}
-
-/* ============================================================================
-   Mobile-First Foundation
-   ============================================================================ */
-
-:root {
-  /* Safe area insets for notched devices */
-  --safe-area-inset-top: env(safe-area-inset-top, 0px);
-  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-area-inset-left: env(safe-area-inset-left, 0px);
-  --safe-area-inset-right: env(safe-area-inset-right, 0px);
-
-  /* Mobile header height */
-  --mobile-header-height: 56px;
-
-  /* Minimum touch target size (Apple HIG) */
-  --min-touch-target: 44px;
-}
-
-:root {
-  --background: oklch(0.99 0.001 285);
-  --foreground: oklch(0.15 0.005 285);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.005 285);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.005 285);
-  --primary: oklch(0.55 0.15 145);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.005 285);
-  --secondary-foreground: oklch(0.25 0 0);
-  --muted: oklch(0.95 0.005 285);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.96 0.005 285);
-  --accent-foreground: oklch(0.15 0.005 285);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.88 0.005 285);
-  --input: oklch(0.88 0.005 285);
-  --ring: oklch(0.55 0.15 145);
-  --radius: 0.5rem;
-  --sidebar: oklch(0.95 0.005 285);
-  --sidebar-foreground: oklch(0.15 0.005 285);
-  --sidebar-border: oklch(0.92 0.003 285);
-}
-
-.dark {
-  --background: oklch(0.13 0.005 285);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.16 0.005 285);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.18 0.005 285);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.65 0.15 145);
-  --primary-foreground: oklch(0.13 0.005 285);
-  --secondary: oklch(0.22 0.005 285);
-  --secondary-foreground: oklch(0.88 0 0);
-  --muted: oklch(0.20 0.005 285);
-  --muted-foreground: oklch(0.63 0 0);
-  --accent: oklch(0.22 0.008 285);
-  --accent-foreground: oklch(0.95 0 0);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.30 0.005 285);
-  --input: oklch(0.22 0.005 285);
-  --ring: oklch(0.65 0.15 145);
-  --sidebar: oklch(0.11 0.005 285);
-  --sidebar-foreground: oklch(0.93 0 0);
-  --sidebar-border: oklch(0.25 0.005 285);
-}
-
-@theme inline {
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--muted-foreground);
-}
-
-/* Scrollbar that only shows while hovering or scrolling. Apply to any
-   element whose scrollbar should fade in/out instead of always being on. */
+/* Hover-reveal scrollbars */
 .scrollbar-auto-hide {
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 200ms ease;
@@ -241,103 +382,65 @@
   background: var(--muted-foreground);
 }
 
-/* ============================================================================
-   Mobile Touch & Gesture Optimizations
-   ============================================================================ */
+/* ----------------------------------------------------------------------------
+   Mobile touch / gesture
+   ---------------------------------------------------------------------------- */
 
-/* Smooth momentum scrolling on iOS */
 .mobile-scroll {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
 
-/* Prevent text selection on interactive elements */
 .no-select {
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
 }
 
-/* Active state for touch feedback */
 @media (hover: none) and (pointer: coarse) {
-  /* Mobile-specific active states */
   button:active,
   [role="button"]:active {
     transform: scale(0.98);
     transition: transform 0.1s ease-out;
   }
-
-  /* Disable hover effects on mobile */
   button:hover,
   [role="button"]:hover {
     background-color: inherit;
   }
 }
 
-/* ============================================================================
-   Mobile Layout Utilities
-   ============================================================================ */
-
-/* Safe area padding utilities */
-.pb-safe {
-  padding-bottom: max(1rem, var(--safe-area-inset-bottom));
-}
-
-.pt-safe {
-  padding-top: max(0.75rem, var(--safe-area-inset-top));
-}
-
+/* Safe-area padding utilities */
+.pb-safe { padding-bottom: max(1rem, var(--safe-area-inset-bottom)); }
+.pt-safe { padding-top: max(0.75rem, var(--safe-area-inset-top)); }
 .px-safe {
   padding-left: var(--safe-area-inset-left);
   padding-right: var(--safe-area-inset-right);
 }
 
-/* Mobile drawer overlay */
+/* Mobile drawer / bottom sheet animation classes */
 .mobile-overlay {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
-
-/* Mobile drawer animation */
 .mobile-drawer {
-  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform var(--duration-slow) var(--ease-out-quad);
 }
+.mobile-drawer.closed { transform: translateX(-100%); }
+.mobile-drawer.open { transform: translateX(0); }
 
-.mobile-drawer.closed {
-  transform: translateX(-100%);
-}
-
-.mobile-drawer.open {
-  transform: translateX(0);
-}
-
-/* Bottom sheet animation */
 .bottom-sheet {
-  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform var(--duration-slow) var(--ease-out-quad);
 }
+.bottom-sheet.closed { transform: translateY(100%); }
+.bottom-sheet.open { transform: translateY(0); }
 
-.bottom-sheet.closed {
-  transform: translateY(100%);
-}
-
-.bottom-sheet.open {
-  transform: translateY(0);
-}
-
-/* ============================================================================
-   Responsive Typography
-   ============================================================================ */
-
-/* Larger text on mobile for readability */
+/* Responsive typography */
 @media (max-width: 640px) {
-  /* Base text slightly larger on mobile */
   .prose {
     font-size: 1rem;
     line-height: 1.625;
   }
-
-  /* Input text size >= 16px to prevent iOS zoom */
   input,
   textarea,
   select {
@@ -345,57 +448,105 @@
   }
 }
 
-/* ============================================================================
-   Mobile-Specific Component Styles
-   ============================================================================ */
-
-/* Full-width messages on mobile */
 @media (max-width: 640px) {
-  .message-container {
-    max-width: 100% !important;
-  }
+  .message-container { max-width: 100% !important; }
 }
-
-/* Hide desktop-only elements on mobile */
 @media (max-width: 640px) {
-  .hide-mobile {
-    display: none !important;
-  }
+  .hide-mobile { display: none !important; }
 }
-
-/* Hide mobile-only elements on desktop */
 @media (min-width: 641px) {
-  .hide-desktop {
-    display: none !important;
-  }
+  .hide-desktop { display: none !important; }
 }
 
-/* Minimum touch target helper */
 .touch-target {
   min-width: var(--min-touch-target);
   min-height: var(--min-touch-target);
 }
 
-/* ============================================================================
-   Mobile Viewport Height Fix
-   ============================================================================ */
-
-/* Use dvh (dynamic viewport height) on mobile to account for browser chrome
-   that appears/disappears (address bar, toolbar, etc.). Falls back to vh. */
+/* Mobile viewport height fix */
 .h-screen-mobile {
   height: 100vh;
   height: 100dvh;
 }
-
-/* Prevent body from being larger than viewport */
-html, body {
-  height: 100%;
-  overflow: hidden;
+html, body { height: 100%; overflow: hidden; }
+@supports (-webkit-touch-callout: none) {
+  .h-screen-mobile { height: -webkit-fill-available; }
 }
 
-/* Fix for iOS Safari 100vh issue */
-@supports (-webkit-touch-callout: none) {
-  .h-screen-mobile {
-    height: -webkit-fill-available;
-  }
+/* ----------------------------------------------------------------------------
+   Signature motion (ported from Terragon)
+   ---------------------------------------------------------------------------- */
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.5s ease-out; }
+
+@keyframes loading-progress {
+  0%   { width: 0; }
+  1%   { width: 2%; }
+  2%   { width: 5%; }
+  4%   { width: 20%; }
+  50%  { width: 25%; }
+  100% { width: 40%; }
+}
+.animate-loading-progress {
+  animation: loading-progress 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes loading-complete { to { width: 100%; } }
+.animate-loading-complete { animation: loading-complete 0.2s ease-out; }
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50%      { opacity: 1; }
+}
+.animate-blink { animation: blink 1s infinite ease-in-out; }
+
+@keyframes shimmer-once {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+.hover-shimmer:hover { animation: shimmer-once 0.6s ease-in-out; }
+
+@keyframes shine {
+  0%   { background-position: 200% 0%; }
+  100% { background-position: -200% 0%; }
+}
+.animate-shine {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--foreground) 50%, transparent) 0%,
+    var(--foreground) 50%,
+    color-mix(in srgb, var(--foreground) 50%, transparent) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 2s linear infinite;
+}
+
+@keyframes slide-down {
+  from { opacity: 0; max-height: 0; transform: translateY(-10px); }
+  to   { opacity: 1; max-height: 100px; transform: translateY(0); }
+}
+@keyframes slide-up {
+  from { opacity: 1; max-height: 100px; transform: translateY(0); }
+  to   { opacity: 0; max-height: 0; transform: translateY(-10px); }
+}
+.animate-slide-down { animation: slide-down 0.3s ease-out; }
+.animate-slide-up   { animation: slide-up 0.3s ease-out; }
+
+/* Truncation helpers */
+.truncate-start {
+  direction: rtl;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.force-ltr {
+  direction: ltr;
+  unicode-bidi: bidi-override;
 }
